@@ -1,9 +1,33 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:lastpage/models/lastpage_colors.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:lastpage/models/user_auth.dart';
 import 'package:lastpage/screens/dashboard.dart';
+import 'package:lastpage/widgets/auth/auth_redirect.dart';
+import 'package:provider/provider.dart';
+import 'package:lastpage/models/lastpage_colors.dart';
+import 'package:lastpage/screens/auth_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+    apiKey: ' AIzaSyBLlStNa-K-gg6nr3mdQxm8KawRH4tPpJA ',
+    appId: '1:891013314139:web:af19cfd86be6df38aa717e',
+    messagingSenderId: '891013314139',
+    projectId: 'lastpage-docscanner2-poc',
+  ));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth()))
+  ], child: const MyApp()));
+
+  doWhenWindowReady(() {
+    const initialSize = Size(750, 500);
+    appWindow.minSize = initialSize;
+    appWindow.maxSize = initialSize;
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.show();
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -45,7 +69,12 @@ class MyApp extends StatelessWidget {
             secondary: LastpageColors.blue,
             tertiary: LastpageColors.lightGrey),
       ),
-      home: const Dashboard(),
+      home: const AuthRedirect(),
+      routes: {
+        AuthRedirect.routeName: (context) => const AuthRedirect(),
+        AuthScreen.routeName: (context) => const AuthScreen(),
+        Dashboard.routeName: (context) => const Dashboard(),
+      },
     );
   }
 }
