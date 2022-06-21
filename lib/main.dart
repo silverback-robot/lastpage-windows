@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:lastpage/screens/dashboard.dart';
+import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/auth/auth_redirect.dart';
+import 'package:lastpage/widgets/dashboard/profile_redirect.dart';
 import 'package:provider/provider.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/screens/auth_screen.dart';
@@ -17,7 +19,9 @@ void main() async {
     projectId: 'lastpage-docscanner2-poc',
   ));
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth()))
+    ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth())),
+    ChangeNotifierProvider<FirestoreRestApi>(
+        create: ((context) => FirestoreRestApi())),
   ], child: const MyApp()));
 
   doWhenWindowReady(() {
@@ -73,7 +77,8 @@ class MyApp extends StatelessWidget {
       routes: {
         AuthRedirect.routeName: (context) => const AuthRedirect(),
         AuthScreen.routeName: (context) => const AuthScreen(),
-        Dashboard.routeName: (context) => const Dashboard(),
+        ProfileRedirect.routeName: (context) => const ProfileRedirect(),
+        Dashboard.routeName: (context) => Dashboard(),
       },
     );
   }
