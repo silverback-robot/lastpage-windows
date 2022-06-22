@@ -1,19 +1,20 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:lastpage/models/user_profile.dart';
 
 class FirestoreRestApi extends ChangeNotifier {
-  final baseUrl = 'https://firestore.googleapis.com/v1';
-  final lastpageProjectId = 'lastpage-docscanner2-poc';
-
+  final _baseUrl = 'https://firestore.googleapis.com/v1';
+  final _lastpageProjectId = 'lastpage-docscanner2-poc';
   final String? _uid = FirebaseAuth.instance.currentUser?.uid;
   Future<String>? _idToken() => FirebaseAuth.instance.currentUser?.getIdToken();
 
   Future<bool> checkUserProfileExists() async {
     var token = await _idToken();
-
     final lastpageFirestoreEndpoint =
-        "$baseUrl/projects/$lastpageProjectId/databases/(default)/documents";
+        "$_baseUrl/projects/$_lastpageProjectId/databases/(default)/documents";
     final userProfilePath = '$lastpageFirestoreEndpoint/users/$_uid';
     var url = Uri.parse(userProfilePath);
 
@@ -21,12 +22,10 @@ class FirestoreRestApi extends ChangeNotifier {
       "Authorization": "Bearer $token",
     });
     if (response.statusCode == 200) {
-      print(response.statusCode);
-      print(response.body);
+      Map<String, dynamic> deserialized = jsonDecode(response.body);
+      var profile = UserProfile.fromJson(deserialized);
       return true;
     } else if (response.statusCode == 404) {
-      print(response.statusCode);
-      print(response.body);
       return false;
     } else {
       return false;
