@@ -24,8 +24,8 @@ void main() async {
   ));
   // Initialize Hive for local storage of API Responses
   await Hive.initFlutter();
-  Box myProfile = await Hive.openBox('userProfile');
   Hive.registerAdapter(UserProfileAdapter());
+  Box myProfile = await Hive.openBox('userProfile');
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth())),
@@ -36,7 +36,7 @@ void main() async {
   doWhenWindowReady(() {
     const initialSize = Size(750, 500);
     appWindow.minSize = initialSize;
-    appWindow.maxSize = initialSize;
+    // appWindow.maxSize = initialSize;
     appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;
     appWindow.show();
