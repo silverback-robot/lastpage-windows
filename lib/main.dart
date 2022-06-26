@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
 import 'package:lastpage/screens/dashboard.dart';
+import 'package:lastpage/screens/library.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/auth/auth_redirect.dart';
 import 'package:lastpage/widgets/dashboard/profile_redirect.dart';
@@ -25,7 +26,7 @@ void main() async {
   // Initialize Hive for local storage of API Responses
   await Hive.initFlutter();
   Hive.registerAdapter<UserUploadInfo>(UserUploadInfoAdapter());
-  // storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
+  await Hive.openBox<UserUploadInfo>('userStorage');
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth())),
@@ -87,7 +88,8 @@ class MyApp extends StatelessWidget {
         AuthRedirect.routeName: (context) => const AuthRedirect(),
         AuthScreen.routeName: (context) => const AuthScreen(),
         ProfileRedirect.routeName: (context) => const ProfileRedirect(),
-        Dashboard.routeName: (context) => Dashboard(),
+        Dashboard.routeName: (context) => const Dashboard(),
+        Library.routeName: (context) => const Library(),
       },
     );
   }
