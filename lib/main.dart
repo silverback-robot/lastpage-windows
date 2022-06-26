@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/screens/auth_screen.dart';
 
+// late Box<UserUploadInfo> storageBox;
 void main() async {
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -24,6 +25,7 @@ void main() async {
   // Initialize Hive for local storage of API Responses
   await Hive.initFlutter();
   Hive.registerAdapter<UserUploadInfo>(UserUploadInfoAdapter());
+  // storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth())),

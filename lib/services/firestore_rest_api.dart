@@ -56,29 +56,36 @@ class FirestoreRestApi extends ChangeNotifier {
   }
 
   fetchUserUploads() async {
-    var token = await _idToken();
+    final storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
     final lastpageFirestoreEndpoint =
         "$_baseUrl/projects/$_lastpageProjectId/databases/(default)/documents";
     final userStoragePath = '$lastpageFirestoreEndpoint/users/$_uid/uploads';
     var url = Uri.parse(userStoragePath);
-    var response = await http.get(url, headers: {
-      "Authorization": "Bearer $token",
-    });
+    var response = await http.get(url, headers: await _authHeader);
     if (response.statusCode == 200) {
       try {
         Map<String, dynamic> deserialized = jsonDecode(response.body);
         var storageDocList = deserialized["documents"] as List;
         for (var e in storageDocList) {
           var uploadInfo = UserUploadInfo.fromJson(e);
+          await storageBox.put(uploadInfo.uploadId, uploadInfo);
         }
       } catch (err) {
         print(err.toString());
       } finally {
-        // print("Storage Box contains ${storageBox.length} document(s).");
+        print("Storage Box contains ${storageBox.length} document(s).");
+        // await storageBox.close();
       }
     } else {
       print(
           "Response Code: ${response.statusCode}; Response Body: ${response.body}");
     }
+  }
+
+  Future<Map<String, String>> get _authHeader async {
+    var token = await _idToken();
+    return {
+      "Authorization": "Bearer $token",
+    };
   }
 }
