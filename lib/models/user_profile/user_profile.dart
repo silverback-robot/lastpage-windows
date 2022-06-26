@@ -1,28 +1,10 @@
-import 'package:hive/hive.dart';
-
-part 'user_profile.g.dart';
-
-@HiveType(typeId: 0)
 class UserProfile {
-  @HiveField(0)
   final String uid;
-
-  @HiveField(1)
   final String name;
-
-  @HiveField(2)
   final String? avatar;
-
-  @HiveField(3)
   final String email;
-
-  @HiveField(4)
   final int? phone;
-
-  @HiveField(5)
   final String university;
-
-  @HiveField(6)
   final String department;
 
   UserProfile({

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastpage/models/user_auth.dart';
-import 'package:lastpage/models/user_profile.dart';
+import 'package:lastpage/models/user_uploads/user_upload_info.dart';
 import 'package:lastpage/screens/dashboard.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/auth/auth_redirect.dart';
@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/screens/auth_screen.dart';
 
-late UserProfile userProfile;
 void main() async {
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -24,8 +23,7 @@ void main() async {
   ));
   // Initialize Hive for local storage of API Responses
   await Hive.initFlutter();
-  Hive.registerAdapter(UserProfileAdapter());
-  Box myProfile = await Hive.openBox('userProfile');
+  Hive.registerAdapter<UserUploadInfo>(UserUploadInfoAdapter());
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth())),
