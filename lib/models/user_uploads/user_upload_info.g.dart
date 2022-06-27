@@ -25,13 +25,13 @@ class UserUploadInfoAdapter extends TypeAdapter<UserUploadInfo> {
       downloadUrls: (fields[5] as List).cast<String>(),
       subjectCode: fields[6] as String,
       semesterNo: fields[7] as int,
-    );
+    )..localFilePaths = (fields[8] as List?)?.cast<String>();
   }
 
   @override
   void write(BinaryWriter writer, UserUploadInfo obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.uploadId)
       ..writeByte(1)
@@ -47,7 +47,9 @@ class UserUploadInfoAdapter extends TypeAdapter<UserUploadInfo> {
       ..writeByte(6)
       ..write(obj.subjectCode)
       ..writeByte(7)
-      ..write(obj.semesterNo);
+      ..write(obj.semesterNo)
+      ..writeByte(8)
+      ..write(obj.localFilePaths);
   }
 
   @override

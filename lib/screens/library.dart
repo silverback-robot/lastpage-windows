@@ -53,7 +53,7 @@ class _LibraryState extends State<Library> {
                                       title: Text(storageItem.title),
                                       subtitle: Text(storageItem.subjectCode),
                                       onTap: () {
-                                        print(storageItem.downloadUrls
+                                        print(storageItem.localFilePaths
                                             .toString());
                                         setState(() {
                                           if (selectedUpload == null) {

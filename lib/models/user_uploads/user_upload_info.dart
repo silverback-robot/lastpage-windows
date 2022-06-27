@@ -28,6 +28,9 @@ class UserUploadInfo {
   @HiveField(7)
   int semesterNo;
 
+  @HiveField(8)
+  List<String>? localFilePaths;
+
   UserUploadInfo({
     required this.uploadId,
     required this.unitNo,

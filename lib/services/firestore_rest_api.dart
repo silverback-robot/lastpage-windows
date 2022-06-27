@@ -1,20 +1,32 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:lastpage/models/user_profile/user_profile.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
+import 'package:uuid/uuid.dart';
 
 class FirestoreRestApi extends ChangeNotifier {
   late UserProfile userProfile;
   late UserUploadInfo userStorage;
   final _baseUrl = 'https://firestore.googleapis.com/v1';
   final _lastpageProjectId = 'lastpage-docscanner2-poc';
+  final uuid = const Uuid();
   final String? _uid = FirebaseAuth.instance.currentUser?.uid;
   Future<String>? _idToken() => FirebaseAuth.instance.currentUser?.getIdToken();
+
+  Future<Map<String, String>> get _authHeader async {
+    var token = await _idToken();
+    return {
+      "Authorization": "Bearer $token",
+    };
+  }
 
   Future<bool> checkUserProfileExists() async {
     final prefs = await SharedPreferences.getInstance();
@@ -55,7 +67,7 @@ class FirestoreRestApi extends ChangeNotifier {
     }
   }
 
-  fetchUserUploads() async {
+  Future<void> fetchUserUploads() async {
     final storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
     final lastpageFirestoreEndpoint =
         "$_baseUrl/projects/$_lastpageProjectId/databases/(default)/documents";
@@ -68,6 +80,13 @@ class FirestoreRestApi extends ChangeNotifier {
         var storageDocList = deserialized["documents"] as List;
         for (var e in storageDocList) {
           var uploadInfo = UserUploadInfo.fromJson(e);
+          // Fetch uploaded files and save local names to uploadInfo
+          List<String> localFilePaths = [];
+          for (var url in uploadInfo.downloadUrls) {
+            var localFilePath = await _downloadFile(url);
+            localFilePaths.add(localFilePath);
+          }
+          uploadInfo.localFilePaths = localFilePaths;
           await storageBox.put(uploadInfo.uploadId, uploadInfo);
         }
       } catch (err) {
@@ -82,10 +101,28 @@ class FirestoreRestApi extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, String>> get _authHeader async {
-    var token = await _idToken();
-    return {
-      "Authorization": "Bearer $token",
-    };
+  Future<String> _downloadFile(String url) async {
+    try {
+      var dio = Dio();
+      var saveDir = await getApplicationDocumentsDirectory();
+      String uniqueLocalName = "lastpage-${uuid.v1()}.png";
+      String savePath = "${saveDir.path}\\$uniqueLocalName";
+      Response response = await dio.get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+        ),
+      );
+      print(response.headers);
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+      return savePath;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 }
