@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
+import 'package:lastpage/screens/fullscreen_view.dart';
 
 class PreviewNote extends StatefulWidget {
   const PreviewNote({required this.selectedUpload, Key? key}) : super(key: key);
@@ -119,7 +121,10 @@ class _PreviewNoteState extends State<PreviewNote> {
                     child: Column(children: [
                       ElevatedButton.icon(
                         style: const ButtonStyle(enableFeedback: true),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, FullscreenView.routeName);
+                        },
                         icon: const Icon(Icons.launch_outlined),
                         label: const Text("OPEN"),
                       ),

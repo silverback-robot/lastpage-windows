@@ -1,10 +1,12 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
 import 'package:lastpage/screens/dashboard.dart';
+import 'package:lastpage/screens/fullscreen_view.dart';
 import 'package:lastpage/screens/library.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/auth/auth_redirect.dart';
@@ -23,6 +25,11 @@ void main() async {
     messagingSenderId: '891013314139',
     projectId: 'lastpage-docscanner2-poc',
   ));
+
+  // Initialize flutter_acrylic
+  WidgetsFlutterBinding.ensureInitialized();
+  await Window.initialize();
+
   // Initialize Hive for local storage of API Responses
   await Hive.initFlutter();
   Hive.registerAdapter<UserUploadInfo>(UserUploadInfoAdapter());
@@ -90,6 +97,7 @@ class MyApp extends StatelessWidget {
         ProfileRedirect.routeName: (context) => const ProfileRedirect(),
         Dashboard.routeName: (context) => const Dashboard(),
         Library.routeName: (context) => const Library(),
+        FullscreenView.routeName: (context) => const FullscreenView(),
       },
     );
   }
