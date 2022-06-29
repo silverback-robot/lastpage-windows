@@ -122,8 +122,8 @@ class _PreviewNoteState extends State<PreviewNote> {
                       ElevatedButton.icon(
                         style: const ButtonStyle(enableFeedback: true),
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, FullscreenView.routeName);
+                          Navigator.pushNamed(context, FullscreenView.routeName,
+                              arguments: widget.selectedUpload);
                         },
                         icon: const Icon(Icons.launch_outlined),
                         label: const Text("OPEN"),
