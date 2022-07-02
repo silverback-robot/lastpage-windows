@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
 import 'package:lastpage/screens/fullscreen_view.dart';

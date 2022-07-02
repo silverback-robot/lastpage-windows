@@ -59,6 +59,9 @@ class FirestoreRestApi extends ChangeNotifier {
         print(err.toString());
       }
       print("Shared Preferences UID: ${prefs.getString('uid')}");
+      // Delete userStorage contents as login UID has changed (different user)
+      final storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
+      await storageBox.clear();
       return true;
     } else if (response.statusCode == 404) {
       return false;
@@ -114,7 +117,7 @@ class FirestoreRestApi extends ChangeNotifier {
           followRedirects: false,
         ),
       );
-      print(response.headers);
+      // print(response.headers);
       File file = File(savePath);
       var raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);

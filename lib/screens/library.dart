@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
+import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/library/preview_note.dart';
+import 'package:provider/provider.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -14,6 +16,12 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   UserUploadInfo? selectedUpload;
+
+  @override
+  void initState() {
+    Provider.of<FirestoreRestApi>(context, listen: false).fetchUserUploads();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
