@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lastpage/models/user_auth.dart';
-import 'package:lastpage/screens/dashboard.dart';
-import 'package:lastpage/widgets/dashboard/profile_redirect.dart';
+import 'package:lastpage/widgets/auth/profile_redirect.dart';
 import 'package:provider/provider.dart';
 
 import '../../screens/auth_screen.dart';

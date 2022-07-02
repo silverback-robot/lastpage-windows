@@ -5,12 +5,12 @@ import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
-import 'package:lastpage/screens/dashboard.dart';
+import 'package:lastpage/screens/window_frame.dart';
 import 'package:lastpage/screens/fullscreen_view.dart';
 import 'package:lastpage/screens/library.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/auth/auth_redirect.dart';
-import 'package:lastpage/widgets/dashboard/profile_redirect.dart';
+import 'package:lastpage/widgets/auth/profile_redirect.dart';
 import 'package:provider/provider.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/screens/auth_screen.dart';
@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
         AuthRedirect.routeName: (context) => const AuthRedirect(),
         AuthScreen.routeName: (context) => const AuthScreen(),
         ProfileRedirect.routeName: (context) => const ProfileRedirect(),
-        Dashboard.routeName: (context) => const Dashboard(),
+        WindowFrame.routeName: (context) => const WindowFrame(),
         Library.routeName: (context) => const Library(),
         FullscreenView.routeName: (context) => const FullscreenView(),
       },

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lastpage/models/user_auth.dart';
-import 'package:lastpage/screens/dashboard.dart';
 import 'package:lastpage/widgets/auth/auth_form.dart';
 import 'package:lastpage/widgets/window_behavior/title_bar.dart';
 import 'package:provider/provider.dart';
