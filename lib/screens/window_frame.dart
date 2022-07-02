@@ -2,7 +2,9 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:lastpage/screens/library.dart';
 import 'package:lastpage/screens/update_profile.dart';
+import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/window_behavior/title_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WindowFrame extends StatefulWidget {
@@ -61,12 +63,27 @@ class _WindowFrameState extends State<WindowFrame> {
                         selectedIcon: Icon(Icons.person),
                         label: Text('Profile'),
                       ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.sync_outlined),
-                        selectedIcon: Icon(Icons.sync),
-                        label: Text('Sync Files'),
-                      ),
                     ],
+                    trailing: Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: Provider.of<FirestoreRestApi>(context,
+                                    listen: false)
+                                .fetchUserUploads,
+                            icon: const Icon(Icons.sync),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text('Sync Now'),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   const VerticalDivider(thickness: 0.5, width: 0.5),
                   Expanded(

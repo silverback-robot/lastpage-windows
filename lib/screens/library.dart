@@ -30,7 +30,7 @@ class _LibraryState extends State<Library> {
         mainAxisSize: MainAxisSize.max,
         children: [
           SizedBox(
-            width: 350,
+            width: selectedUpload == null ? 800 : 400,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FutureBuilder(
@@ -41,26 +41,36 @@ class _LibraryState extends State<Library> {
                     return ValueListenableBuilder<Box>(
                         valueListenable: snapshot.data!.listenable(),
                         builder: (context, box, widget) {
-                          return ListView.builder(
+                          return GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 350,
+                                childAspectRatio:
+                                    selectedUpload != null ? 2.5 : 4,
+                                crossAxisSpacing: 4,
+                                mainAxisSpacing: 4,
+                              ),
                               itemCount: box.keys.length,
                               itemBuilder: (context, index) {
                                 UserUploadInfo storageItem = box.getAt(index);
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 4.0),
-                                  child: ListTile(
-                                    title: Text(storageItem.title),
-                                    subtitle: Text(storageItem.subjectCode),
-                                    onTap: () {
-                                      setState(() {
-                                        if (selectedUpload == null) {
-                                          selectedUpload = storageItem;
-                                        } else {
+                                return ListTile(
+                                  style: ListTileStyle.list,
+                                  title: Text(storageItem.title),
+                                  subtitle: Text(storageItem.subjectCode),
+                                  onTap: () {
+                                    setState(() {
+                                      if (selectedUpload == null) {
+                                        selectedUpload = storageItem;
+                                      } else {
+                                        if (selectedUpload!.uploadId ==
+                                            storageItem.uploadId) {
                                           selectedUpload = null;
+                                        } else {
+                                          selectedUpload = storageItem;
                                         }
-                                      });
-                                    },
-                                  ),
+                                      }
+                                    });
+                                  },
                                 );
                               });
                         });
@@ -73,7 +83,7 @@ class _LibraryState extends State<Library> {
             ),
           ),
           SizedBox(
-            width: 350,
+            width: selectedUpload != null ? 400 : 0,
             child: selectedUpload != null
                 ? PreviewNote(selectedUpload: selectedUpload!)
                 : null,
