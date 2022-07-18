@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
 import 'package:lastpage/screens/window_frame.dart';
@@ -39,6 +40,8 @@ void main() async {
     ChangeNotifierProvider<UserAuth>(create: ((context) => UserAuth())),
     ChangeNotifierProvider<FirestoreRestApi>(
         create: ((context) => FirestoreRestApi())),
+    ChangeNotifierProvider<SyllabusProvider>(
+        create: ((context) => SyllabusProvider()), lazy: false),
   ], child: const MyApp()));
 
   doWhenWindowReady(() {

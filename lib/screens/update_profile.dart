@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lastpage/models/syllabus/syllabus.dart';
+import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,8 @@ class UpdateProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final syllabus = Syllabus();
+    var data = Provider.of<SyllabusProvider>(context).syllabus;
+
     return Scaffold(
       appBar: AppBar(actions: [
         TextButton.icon(
@@ -24,11 +25,9 @@ class UpdateProfile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text("TODO: UPDATE PROFILE SCREEN"),
-            ElevatedButton(
-                onPressed: () {
-                  syllabus.parseSyllabusYaml();
-                },
-                child: const Text("Fetch Syllabus")),
+            // ElevatedButton(
+            //     onPressed: () {}, child: const Text("Fetch Syllabus")),
+            Text(data?.syllabusVersion ?? "No data yet"),
           ],
         ),
       ),
