@@ -6,6 +6,7 @@ class UserProfile {
   final int? phone;
   final String university;
   final String department;
+  final String syllabusYamlUrl;
 
   UserProfile({
     required this.uid,
@@ -15,6 +16,7 @@ class UserProfile {
     this.phone,
     required this.university,
     required this.department,
+    required this.syllabusYamlUrl,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,8 @@ class UserProfile {
     var name = jsonFields['name']['stringValue'] as String;
     var university = jsonFields['university']['stringValue'] as String;
     var department = jsonFields['department']['stringValue'] as String;
+    var syllabusYamlUrl =
+        jsonFields['syllabusYamlUrl']['stringValue'] as String;
     var avatar = jsonFields['avatar']['stringValue'] as String?;
 
     return UserProfile(
@@ -35,7 +39,8 @@ class UserProfile {
         email: email,
         phone: phone,
         university: university,
-        department: department);
+        department: department,
+        syllabusYamlUrl: syllabusYamlUrl);
   }
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +50,7 @@ class UserProfile {
         'name': name,
         'university': university,
         'department': department,
+        'syllabusYamlUrl': syllabusYamlUrl,
         'avatar': avatar,
       };
 }

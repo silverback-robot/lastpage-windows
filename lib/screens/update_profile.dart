@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lastpage/models/syllabus/syllabus.dart';
 import 'package:lastpage/models/user_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ class UpdateProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final syllabus = Syllabus();
     return Scaffold(
       appBar: AppBar(actions: [
         TextButton.icon(
@@ -15,8 +17,20 @@ class UpdateProfile extends StatelessWidget {
           label: const Text("Sign Out"),
         )
       ]),
-      body: const Center(
-        child: Text("TODO: UPDATE PROFILE SCREEN"),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text("TODO: UPDATE PROFILE SCREEN"),
+            ElevatedButton(
+                onPressed: () {
+                  syllabus.parseSyllabusYaml();
+                },
+                child: const Text("Fetch Syllabus")),
+          ],
+        ),
       ),
     );
   }
