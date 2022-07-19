@@ -41,7 +41,7 @@ void main() async {
     ChangeNotifierProvider<FirestoreRestApi>(
         create: ((context) => FirestoreRestApi())),
     ChangeNotifierProvider<SyllabusProvider>(
-        create: ((context) => SyllabusProvider()), lazy: false),
+        create: ((context) => SyllabusProvider())),
   ], child: const MyApp()));
 
   doWhenWindowReady(() {

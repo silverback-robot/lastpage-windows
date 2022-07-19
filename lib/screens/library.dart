@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lastpage/models/syllabus/syllabus.dart';
+import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/library/preview_note.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -16,11 +19,18 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   UserUploadInfo? selectedUpload;
+  Syllabus? syllabus;
 
   @override
   void initState() {
     Provider.of<FirestoreRestApi>(context, listen: false).fetchUserUploads();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    syllabus = Provider.of<SyllabusProvider>(context).syllabus;
+    super.didChangeDependencies();
   }
 
   @override
@@ -53,10 +63,16 @@ class _LibraryState extends State<Library> {
                               itemCount: box.keys.length,
                               itemBuilder: (context, index) {
                                 UserUploadInfo storageItem = box.getAt(index);
+                                var subjectTitle = syllabus?.subjects
+                                    .firstWhereOrNull((element) =>
+                                        element.subjectCode ==
+                                        storageItem.subjectCode)
+                                    ?.subjectTitle;
                                 return ListTile(
                                   style: ListTileStyle.list,
                                   title: Text(storageItem.title),
-                                  subtitle: Text(storageItem.subjectCode),
+                                  subtitle: Text(
+                                      subjectTitle ?? storageItem.subjectCode),
                                   onTap: () {
                                     setState(() {
                                       if (selectedUpload == null) {

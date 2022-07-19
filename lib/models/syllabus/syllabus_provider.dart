@@ -68,6 +68,9 @@ class SyllabusProvider extends ChangeNotifier {
     var subjectsList = ((mapData["subjects"] ?? []) as List);
     List<Subject> subjects = [];
     for (var subject in subjectsList) {
+      var subjectCode = subject['subjectCode'] as String;
+      var subjectTitle = subject['subjectTitle'] as String;
+      var LTPC = subject['LTPC'] as String;
       var subjectUnitsRaw = ((subject['subjectUnits'] ?? []) as List);
       List<SubjectUnit> subjectUnits = [];
       for (var item in subjectUnitsRaw) {
@@ -78,6 +81,12 @@ class SyllabusProvider extends ChangeNotifier {
         );
         subjectUnits.add(subjectUnit);
       }
+      var subjectInfo = Subject(
+          subjectCode: subjectCode,
+          subjectTitle: subjectTitle,
+          LTPC: LTPC,
+          subjectUnits: subjectUnits);
+      subjects.add(subjectInfo);
     }
     syllabus = Syllabus(
       university: university,
