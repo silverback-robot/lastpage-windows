@@ -73,6 +73,7 @@ class FirestoreRestApi extends ChangeNotifier {
 
   Future<void> fetchUserUploads() async {
     final storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
+    final availableDocIds = storageBox.keys.toList();
     final lastpageFirestoreEndpoint =
         "$_baseUrl/projects/$_lastpageProjectId/databases/(default)/documents";
     final userStoragePath = '$lastpageFirestoreEndpoint/users/$_uid/uploads';
@@ -84,6 +85,12 @@ class FirestoreRestApi extends ChangeNotifier {
         var storageDocList = deserialized["documents"] as List;
         for (var e in storageDocList) {
           var uploadInfo = UserUploadInfo.fromJson(e);
+          // Avoid downloading notes that are already tracked locally
+          // PENDING: Check for last update timestamp and download fresh if there's a newer version
+          if (availableDocIds.contains(uploadInfo.uploadId)) {
+            print("${uploadInfo.uploadId} already exists. Skipping...");
+            continue;
+          }
           // Fetch uploaded files and save local names to uploadInfo
           List<String> localFilePaths = [];
           for (var url in uploadInfo.downloadUrls) {
