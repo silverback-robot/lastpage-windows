@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/screens/library.dart';
 import 'package:lastpage/screens/update_profile.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
@@ -20,6 +21,9 @@ class _WindowFrameState extends State<WindowFrame> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final apiService = Provider.of<FirestoreRestApi>(context, listen: false);
+    final syllabusProvider =
+        Provider.of<SyllabusProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -69,9 +73,16 @@ class _WindowFrameState extends State<WindowFrame> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            onPressed: Provider.of<FirestoreRestApi>(context,
-                                    listen: false)
-                                .fetchUserUploads,
+                            onPressed: () async {
+                              await apiService.fetchUserProfile();
+                              await apiService.fetchUserUploads();
+                              if (apiService.syllabusObsolete) {
+                                var status =
+                                    await syllabusProvider.refreshSyllabus();
+                                // Reset status of remote syllabus YAML URL change after refreshing syllabus
+                                apiService.syllabusObsolete = !status;
+                              }
+                            },
                             icon: const Icon(Icons.sync),
                           ),
                           const SizedBox(

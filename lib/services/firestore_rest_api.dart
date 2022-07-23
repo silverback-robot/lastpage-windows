@@ -21,6 +21,16 @@ class FirestoreRestApi extends ChangeNotifier {
   final String? _uid = FirebaseAuth.instance.currentUser?.uid;
   Future<String>? _idToken() => FirebaseAuth.instance.currentUser?.getIdToken();
 
+// Signal changes detected in remote syllabus YAML URL
+  bool _syllabusObsolete = false;
+  bool get syllabusObsolete => _syllabusObsolete;
+  set syllabusObsolete(bool status) {
+    if (status != _syllabusObsolete) {
+      _syllabusObsolete = status;
+      notifyListeners();
+    }
+  }
+
   Future<Map<String, String>> get _authHeader async {
     var token = await _idToken();
     return {
@@ -34,7 +44,14 @@ class FirestoreRestApi extends ChangeNotifier {
     if (storedUid == _uid) {
       print("Profile available in shared preferences");
       return true;
+    } else {
+      var profileStatus = await fetchUserProfile();
+      return profileStatus;
     }
+  }
+
+  Future<bool> fetchUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
     var token = await _idToken();
     final lastpageFirestoreEndpoint =
         "$_baseUrl/projects/$_lastpageProjectId/databases/(default)/documents";
@@ -48,21 +65,34 @@ class FirestoreRestApi extends ChangeNotifier {
       try {
         Map<String, dynamic> deserialized = jsonDecode(response.body);
         var profile = UserProfile.fromJson(deserialized);
-        await prefs.setString('uid', profile.uid);
+        // Empty storage box only if a different user has logged in
+        var currentUid = prefs.getString('uid') ?? 'NO_PREVIOUS_UID';
+        if (profile.uid != currentUid) {
+          print("Logged in as a different user. Emptying storage box.");
+          // Delete userStorage contents as login UID has changed (different user)
+          final storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
+          await storageBox.clear();
+          await prefs.setString('uid', profile.uid);
+        }
+        // Detect changes to syllabus YAML URL in User Profile and resync syllabus
+        var currentSyllabusUrl =
+            prefs.getString('syllabusYamlUrl') ?? 'UNAVAILABLE';
+        if (profile.syllabusYamlUrl != currentSyllabusUrl) {
+          print("Syllabus URL has changed in the User's Profile!");
+          print("PREV: $currentSyllabusUrl");
+          print("CURR: ${profile.syllabusYamlUrl}");
+          await prefs.setString('syllabusYamlUrl', profile.syllabusYamlUrl);
+          syllabusObsolete = true;
+        }
         await prefs.setString('name', profile.name);
         await prefs.setString('avatar', profile.avatar ?? '');
         await prefs.setString('email', profile.avatar ?? '');
         await prefs.setString('university', profile.university);
         await prefs.setString('department', profile.department);
-        await prefs.setString('syllabusYamlUrl', profile.syllabusYamlUrl);
         await prefs.setInt('phone', profile.phone ?? 0);
       } catch (err) {
         print(err.toString());
       }
-      print("Shared Preferences UID: ${prefs.getString('uid')}");
-      // Delete userStorage contents as login UID has changed (different user)
-      final storageBox = await Hive.openBox<UserUploadInfo>('userStorage');
-      await storageBox.clear();
       return true;
     } else if (response.statusCode == 404) {
       return false;

@@ -15,6 +15,17 @@ class SyllabusProvider extends ChangeNotifier {
     _processSyllabusYaml();
     notifyListeners();
   }
+
+  Future<bool> refreshSyllabus() async {
+    var status = await _processSyllabusYaml();
+    if (status) {
+      notifyListeners();
+      return status;
+    } else {
+      return false;
+    }
+  }
+
   //Check whether syllabus YAML exists
   Future<String> _getSyllabusPath() async {
     var appDir = await getApplicationSupportDirectory();
@@ -57,7 +68,7 @@ class SyllabusProvider extends ChangeNotifier {
     }
   }
 
-  _processSyllabusYaml() async {
+  Future<bool> _processSyllabusYaml() async {
     var syllabusPath = await _getSyllabusPath();
     final data = await io.File(syllabusPath).readAsString();
     final mapData = loadYaml(data);
@@ -95,5 +106,6 @@ class SyllabusProvider extends ChangeNotifier {
       subjects: subjects,
     );
     notifyListeners();
+    return true;
   }
 }
