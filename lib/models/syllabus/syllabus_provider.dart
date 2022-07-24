@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lastpage/models/syllabus/semester.dart';
 import 'package:lastpage/models/syllabus/subject.dart';
 import 'package:lastpage/models/syllabus/syllabus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,10 @@ class SyllabusProvider extends ChangeNotifier {
   }
 
   Future<bool> refreshSyllabus() async {
+    // Download and override existing syllabus YAML (syllabus change detected during sync)
+    final prefs = await SharedPreferences.getInstance();
+    var syllabusYamlUrl = prefs.getString('syllabusYamlUrl')!;
+    await _downloadSyllabus(syllabusYamlUrl);
     var status = await _processSyllabusYaml();
     if (status) {
       notifyListeners();
@@ -77,6 +82,14 @@ class SyllabusProvider extends ChangeNotifier {
     var course = mapData["course"];
     var syllabusVersion = mapData["syllabus_version"];
     var subjectsList = ((mapData["subjects"] ?? []) as List);
+    var semesterYamlMap = (mapData["semesterSubjects"] as YamlMap);
+    List<Semester> semesters = [];
+    for (var sem in semesterYamlMap.entries) {
+      int semesterNo = int.parse(sem.key.toString().trim());
+      List<String> semesterSubjects = (sem.value as YamlList).cast();
+      semesters.add(
+          Semester(semesterNo: semesterNo, semesterSubjects: semesterSubjects));
+    }
     List<Subject> subjects = [];
     for (var subject in subjectsList) {
       var subjectCode = subject['subjectCode'] as String;
@@ -104,6 +117,7 @@ class SyllabusProvider extends ChangeNotifier {
       course: course,
       syllabusVersion: syllabusVersion,
       subjects: subjects,
+      semesters: semesters,
     );
     notifyListeners();
     return true;
