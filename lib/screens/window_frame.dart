@@ -2,6 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/screens/library.dart';
+import 'package:lastpage/screens/syllabus_screen.dart';
 import 'package:lastpage/screens/update_profile.dart';
 import 'package:lastpage/services/firestore_rest_api.dart';
 import 'package:lastpage/widgets/window_behavior/title_bar.dart';
@@ -116,7 +117,7 @@ class _WindowFrameState extends State<WindowFrame> {
       case 0:
         return const Library();
       case 1:
-        return const Library();
+        return const SyllabusScreen();
       case 2:
         return const UpdateProfile();
       case 3:
