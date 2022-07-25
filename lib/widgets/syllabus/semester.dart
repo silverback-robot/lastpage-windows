@@ -10,16 +10,14 @@ class SemesterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridTile(
-      child: Container(
-        color: LastpageColors.white,
+    return Ink(
+      color: LastpageColors.white,
+      child: GridTile(
         child: Center(
           child: Text(
             semester.semesterNo.toString(),
-            style: const TextStyle(
-                fontSize: 45,
-                // fontWeight: FontWeight.bold,
-                color: LastpageColors.darkGrey),
+            style:
+                const TextStyle(fontSize: 45, color: LastpageColors.darkGrey),
           ),
         ),
       ),
