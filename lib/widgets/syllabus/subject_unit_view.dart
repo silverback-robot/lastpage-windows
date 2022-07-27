@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/models/syllabus/subject.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
+import 'package:lastpage/widgets/syllabus/note_icon.dart';
 
 class SubjectUnitView extends StatelessWidget {
   const SubjectUnitView({required this.unit, this.unitUploads, Key? key})
@@ -44,7 +45,7 @@ class SubjectUnitView extends StatelessWidget {
             if (unit.unitContents != null) Text(unit.unitContents!),
             if (unitUploads != null && unitUploads!.isNotEmpty)
               const SizedBox(
-                height: 10,
+                height: 21,
                 child: Center(
                   child: Divider(
                     thickness: 1,
@@ -52,7 +53,12 @@ class SubjectUnitView extends StatelessWidget {
                 ),
               ),
             if (unitUploads != null && unitUploads!.isNotEmpty)
-              ...unitUploads!.map((e) => Text(e.uploadId)),
+              GridView(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, childAspectRatio: 3),
+                children: unitUploads!.map((e) => NoteIcon(note: e)).toList(),
+              ),
           ],
         ),
       ),
