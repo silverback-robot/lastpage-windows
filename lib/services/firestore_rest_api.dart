@@ -86,7 +86,7 @@ class FirestoreRestApi extends ChangeNotifier {
         }
         await prefs.setString('name', profile.name);
         await prefs.setString('avatar', profile.avatar ?? '');
-        await prefs.setString('email', profile.avatar ?? '');
+        await prefs.setString('email', profile.email);
         await prefs.setString('university', profile.university);
         await prefs.setString('department', profile.department);
         await prefs.setInt('phone', profile.phone ?? 0);
