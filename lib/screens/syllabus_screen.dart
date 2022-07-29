@@ -42,37 +42,35 @@ class _SyllabusScreenState extends State<SyllabusScreen> {
       body: selectedSubject == null
           ? Row(
               children: [
-                SizedBox(
-                  width: 400,
+                Expanded(
+                  flex: 2,
                   child: ListView(
                     children: [
                       const Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 4.0, vertical: 8.0),
+                            horizontal: 12.0, vertical: 8.0),
                         child:
                             Text("Semesters", style: TextStyle(fontSize: 32)),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GridView(
-                          shrinkWrap: true,
-                          // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          //   crossAxisCount: 2,
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            mainAxisExtent: 120,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                          ),
-                          children: gridContents,
+                      GridView(
+                        padding: const EdgeInsets.all(15.0),
+                        shrinkWrap: true,
+                        // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        //   crossAxisCount: 2,
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 150,
+                          mainAxisExtent: 120,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
                         ),
+                        children: gridContents,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 10),
                 Expanded(
+                  flex: 3,
                   // width: 300,
                   child: selectedSem != null
                       ? Column(
@@ -89,29 +87,27 @@ class _SyllabusScreenState extends State<SyllabusScreen> {
                               ),
                             ),
                             Expanded(
-                              child: SizedBox(
-                                width: 400,
-                                child: ListView(
-                                  controller: ScrollController(),
-                                  // shrinkWrap: true,
-                                  children: syllabus.subjects
-                                      .where((subject) => selectedSem!
-                                          .semesterSubjects
-                                          .contains(subject.subjectCode))
-                                      .map((e) => Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: ListTile(
-                                              title: Text(e.subjectTitle),
-                                              subtitle: Text(e.subjectCode),
-                                              onTap: () {
-                                                setState(() {
-                                                  selectedSubject = e;
-                                                });
-                                              },
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
+                              child: ListView(
+                                controller: ScrollController(),
+                                // shrinkWrap: true,
+                                children: syllabus.subjects
+                                    .where((subject) => selectedSem!
+                                        .semesterSubjects
+                                        .contains(subject.subjectCode))
+                                    .map((e) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 4.0),
+                                          child: ListTile(
+                                            title: Text(e.subjectTitle),
+                                            subtitle: Text(e.subjectCode),
+                                            onTap: () {
+                                              setState(() {
+                                                selectedSubject = e;
+                                              });
+                                            },
+                                          ),
+                                        ))
+                                    .toList(),
                               ),
                             ),
                           ],
