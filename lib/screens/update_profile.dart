@@ -262,59 +262,63 @@ class UpdateProfile extends StatelessWidget {
                                         ),
                                       ),
                                       Center(
-                                        child: Container(
-                                          width: 400,
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: LastpageColors.lightGrey,
-                                                width: 0.75),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  height: 30,
-                                                  'assets/logo/lastpage_logo.svg'),
-                                              Container(
-                                                margin: const EdgeInsets.all(8),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 4,
-                                                        vertical: 2),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: LastpageColors
-                                                            .darkGrey,
-                                                        width: 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3),
-                                                    color: LastpageColors
-                                                        .darkGrey),
-                                                child: const Text(
-                                                    "Version: 0.0.1",
-                                                    style: TextStyle(
+                                        child: Card(
+                                          child: Container(
+                                            width: 400,
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      LastpageColors.lightGrey,
+                                                  width: 0.75),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    height: 30,
+                                                    'assets/logo/lastpage_logo.svg'),
+                                                Container(
+                                                  margin:
+                                                      const EdgeInsets.all(8),
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 4,
+                                                      vertical: 2),
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: LastpageColors
+                                                              .darkGrey,
+                                                          width: 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3),
+                                                      color: LastpageColors
+                                                          .darkGrey),
+                                                  child: const Text(
+                                                      "Version: 0.0.1",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: LastpageColors
+                                                              .white)),
+                                                ),
+                                                // ignore: prefer_const_constructors
+                                                Text(
+                                                    textAlign: TextAlign.center,
+                                                    "\u00a9 Copyright owned by Lastpage Student Services. By using this and other lastpage apps, you are agreeing to our terms of service.",
+                                                    style: const TextStyle(
                                                         fontSize: 12,
                                                         color: LastpageColors
-                                                            .white)),
-                                              ),
-                                              // ignore: prefer_const_constructors
-                                              Text(
-                                                  textAlign: TextAlign.center,
-                                                  "\u00a9 Copyright owned by Lastpage Student Services. By using this and other lastpage apps, you are agreeing to our terms of service.",
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: LastpageColors
-                                                          .darkGrey,
-                                                      letterSpacing: -1)),
-                                            ],
+                                                            .darkGrey,
+                                                        letterSpacing: -1)),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
