@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/screens/library.dart';
 import 'package:lastpage/screens/syllabus_screen.dart';
@@ -31,7 +32,26 @@ class _WindowFrameState extends State<WindowFrame> {
         toolbarHeight: 27,
         title: WindowTitleBarBox(
           child: Row(
-            children: [Expanded(child: MoveWindow()), const WindowButtons()],
+            children: [
+              Expanded(
+                  child: MoveWindow(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(children: [
+                    Image.asset('assets/icons/lastpage_icon.png'),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    const Text(
+                      'lastpage',
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal, fontSize: 15),
+                    )
+                  ]),
+                ),
+              )),
+              const WindowButtons()
+            ],
           ),
         ),
         elevation: 0,
@@ -41,16 +61,35 @@ class _WindowFrameState extends State<WindowFrame> {
           builder: (BuildContext context,
               AsyncSnapshot<SharedPreferences> sharedPrefSnapshot) {
             if (sharedPrefSnapshot.hasData) {
-              var prefs = sharedPrefSnapshot.data!;
               return Row(
                 children: [
                   NavigationRail(
+                    minWidth: 80,
                     selectedIndex: _selectedIndex,
                     onDestinationSelected: (int index) {
                       setState(() {
                         _selectedIndex = index;
                       });
                     },
+                    useIndicator: true,
+                    indicatorColor: LastpageColors.blue,
+                    unselectedIconTheme: const IconThemeData(
+                      opacity: 70,
+                      color: LastpageColors.darkGrey,
+                      size: 28,
+                    ),
+                    selectedIconTheme: const IconThemeData(
+                      opacity: 50,
+                      color: LastpageColors.white,
+                      size: 24,
+                    ),
+                    selectedLabelTextStyle: const TextStyle(
+                      color: LastpageColors.blue,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    unselectedLabelTextStyle: const TextStyle(
+                        color: LastpageColors.black, fontSize: 15),
                     labelType: NavigationRailLabelType.all,
                     destinations: const <NavigationRailDestination>[
                       NavigationRailDestination(

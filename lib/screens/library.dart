@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lastpage/models/lastpage_colors.dart';
 import 'package:lastpage/models/syllabus/syllabus.dart';
 import 'package:lastpage/models/syllabus/syllabus_provider.dart';
 import 'package:lastpage/models/user_uploads/user_upload_info.dart';
@@ -70,9 +71,37 @@ class _LibraryState extends State<Library> {
                                     ?.subjectTitle;
                                 return ListTile(
                                   style: ListTileStyle.list,
-                                  title: Text(storageItem.title),
+                                  title: Text(
+                                    storageItem.title,
+                                    style: selectedUpload?.uploadId ==
+                                            storageItem.uploadId
+                                        ? const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: LastpageColors.darkGrey,
+                                          )
+                                        : null,
+                                  ),
                                   subtitle: Text(
-                                      subjectTitle ?? storageItem.subjectCode),
+                                    subjectTitle ?? storageItem.subjectCode,
+                                    style: selectedUpload?.uploadId ==
+                                            storageItem.uploadId
+                                        ? const TextStyle(
+                                            color: LastpageColors.darkGrey,
+                                            fontSize: 14,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        : const TextStyle(fontSize: 14),
+                                  ),
+                                  selected: selectedUpload?.uploadId ==
+                                      storageItem.uploadId,
+                                  selectedTileColor: LastpageColors.white,
+                                  trailing: selectedUpload?.uploadId ==
+                                          storageItem.uploadId
+                                      ? const CircleAvatar(
+                                          radius: 4,
+                                          backgroundColor: LastpageColors.blue,
+                                        )
+                                      : null,
                                   onTap: () {
                                     setState(() {
                                       if (selectedUpload == null) {
